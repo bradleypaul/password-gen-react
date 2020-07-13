@@ -41,6 +41,7 @@ class App extends React.Component {
 
   reset() { 
     this.setState(() => this.default);
+    // turn off checkboxes
   }
 
   render() {
