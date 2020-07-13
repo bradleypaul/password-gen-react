@@ -1,30 +1,30 @@
 // Assignment code here
-const lowercase = "abcdefghijklmnopqrstuvwxyz";
-const uppercase = lowercase.toUpperCase();
+const lower = "abcdefghijklmnopqrstuvwxyz";
+const upper = lower.toUpperCase();
 const numerals = "0123456789";
-const specialCharacters = ` !"#$%&'()*+,-./:;<=>?@[]^_\`{|}~`;
+const specialChars = ` !"#$%&'()*+,-./:;<=>?@[]^_\`{|}~`;
 
 // prompt user and generate password
 function generatePassword({
-    length, includeLowercase, includeUppercase, includeNumbers, includeSpecialCharacters
+  length, lowercase, uppercase, numbers, specialCharacters
 }) {
   if (length >= 8 && length <= 128) {
-    if (includeLowercase || includeUppercase || includeNumbers || includeSpecialCharacters) {
+    if (lowercase || uppercase || numbers || specialCharacters) {
       let wordbank = '';
-      if (includeLowercase) {
-        wordbank += lowercase;
+      if (lowercase) {
+        wordbank = lower;
       }
 
-      if (includeUppercase) {
-        wordbank += uppercase;
+      if (uppercase) {
+        wordbank += upper;
       }
 
-      if (includeNumbers) {
+      if (numbers) {
         wordbank += numerals;
       }
 
-      if (includeSpecialCharacters) {
-        wordbank += specialCharacters;
+      if (specialCharacters) {
+        wordbank += specialChars;
       }
 
       let password = "";
@@ -36,6 +36,19 @@ function generatePassword({
       return password;
     }
   }
+  else {
+    return "Invalid criteria. Please check one or more boxes below."
+  }
 }
 
-export default generatePassword;
+function makeObject(name, value) {
+  const returnVal = {};
+  console.log(name + " " + value)
+  returnVal[name] = !value;
+  return returnVal;
+}
+
+export {
+  generatePassword,
+  makeObject
+};

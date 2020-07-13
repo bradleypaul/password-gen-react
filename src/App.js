@@ -1,22 +1,24 @@
 import React from 'react';
-import generatePassword from './generate';
+import { generatePassword, makeObject } from './generate';
 import './App.css';
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { password: '' };
+    this.state = {
+      password: '',
+      uppercase: false,
+      lowercase: false,
+      specialCharacters: false,
+      numbers: false,
+      length: 0
+    };
   }
 
   generate() {
-    const password = generatePassword({
-      length: 128,
-      includeLowercase: true,
-      includeUppercase: true,
-      includeNumbers: true,
-      includeSpecialCharacters: true
-    });
-    this.setState((state, props) => {
+    const password = generatePassword(this.state);
+    console.log(password)
+    this.setState(() => {
       return {
         password
       }
@@ -24,7 +26,10 @@ class App extends React.Component {
   }
 
   check(e) {
-    console.log(e)
+    const temp = makeObject(e.target.name, this.state[e.target.name]);
+    this.setState(() => {
+      return temp;
+    });
   }
   render() {
     return (
@@ -52,24 +57,27 @@ class App extends React.Component {
          Criteria:
          <div>
               <label>
-                <input type="checkbox" onClick={(e) => this.check(e)}></input>Include Lowercase
+                <input type="checkbox" name="lowercase" onClick={(e) => this.check(e)}></input>Include Lowercase
              </label>
             </div>
             <div>
               <label>
-                <input type="checkbox" onClick={(e) => this.check(e)}></input>
-            Include Uppercase
-            </label>
-            </div>
-            <div><label>
-              <input type="checkbox" onClick={(e) => this.check(e)}></input>
-            Include Numbers
-            </label>
+                <input type="checkbox" name="uppercase" onClick={(e) => this.check(e)}></input>
+                Include Uppercase
+              </label>
             </div>
             <div>
               <label>
-                <input type="checkbox" onClick={(e) => this.check(e)}>
-                </input>Include Special Characters</label></div>
+                <input type="checkbox" name="numbers" onClick={(e) => this.check(e)}></input>
+                Include Numbers
+              </label>
+            </div>
+            <div>
+              <label>
+                <input type="checkbox" name="specialCharacters" onClick={(e) => this.check(e)}></input>
+                  Include Special Characters
+                </label>
+            </div>
           </div>
         </div>
       </div>
