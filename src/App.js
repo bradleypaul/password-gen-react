@@ -10,7 +10,7 @@ class App extends React.Component {
 
   generate() {
     const password = generatePassword({
-      length: 10,
+      length: 128,
       includeLowercase: true,
       includeUppercase: true,
       includeNumbers: true,
@@ -48,11 +48,11 @@ class App extends React.Component {
           <div className="card-footer">
             <button id="generate" className="btn" onClick={() => this.generate()}>Generate Password</button>
           </div>
-          {/* Criteria: 
-         <label><input type="checkbox"></input>Include Lowercase</label>
-         <label><input type="checkbox"></input>Include Uppercase</label>
-         <label><input type="checkbox"></input>Include Numbers</label>
-         <label><input type="checkbox" onClick={(e) => this.check(e)}></input>Include Special Characters</label> */}
+         Criteria: 
+         <label><input type="checkbox" onClick={(e) => this.check(e)}></input>Include Lowercase</label>
+         <label><input type="checkbox" onClick={(e) => this.check(e)}></input>Include Uppercase</label>
+         <label><input type="checkbox" onClick={(e) => this.check(e)}></input>Include Numbers</label>
+         <label><input type="checkbox" onClick={(e) => this.check(e)}></input>Include Special Characters</label>
         </div>
       </div>
     );
