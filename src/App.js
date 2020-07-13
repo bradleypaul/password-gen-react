@@ -5,23 +5,30 @@ import './App.css';
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
+    this.default = {
       password: '',
       uppercase: false,
       lowercase: false,
       specialCharacters: false,
       numbers: false,
-      length: 0
+      length: 8
     };
+
+    this.state = this.default;
   }
 
   generate() {
     const password = generatePassword(this.state);
-    console.log(password)
     this.setState(() => {
       return {
         password
       }
+    });
+  }
+
+  updateLength(value) {
+    this.setState(() => {
+      return {'length': value}
     });
   }
 
@@ -31,6 +38,11 @@ class App extends React.Component {
       return temp;
     });
   }
+
+  reset() { 
+    this.setState(() => this.default);
+  }
+
   render() {
     return (
       <div className="App">
@@ -52,12 +64,18 @@ class App extends React.Component {
               ></textarea>
             </div>
             <div className="card-footer">
-              <button id="generate" className="btn" onClick={() => this.generate()}>Generate Password</button>
+              <button id="generate" className="btn" onClick={() => this.generate()}>
+                Generate Password
+              </button>
+              <button id="generate" className="btn" onClick={() => this.reset()}>
+                Reset
+              </button>
             </div>
-         Criteria:
+         Criteria: (Must select one or more)
          <div>
               <label>
-                <input type="checkbox" name="lowercase" onClick={(e) => this.check(e)}></input>Include Lowercase
+                <input type="checkbox" name="lowercase" onClick={(e) => this.check(e)}></input>
+                Include Lowercase
              </label>
             </div>
             <div>
@@ -76,6 +94,14 @@ class App extends React.Component {
               <label>
                 <input type="checkbox" name="specialCharacters" onClick={(e) => this.check(e)}></input>
                   Include Special Characters
+                </label>
+            </div>
+            <div>
+              <label>
+                <div>
+                  <input type="range" min="8" max="128" defaultValue="8" onChange={(e) => this.updateLength(e.target.value)}></input>
+                </div>
+                Length: {this.state.length} (Between 8 and 128)
                 </label>
             </div>
           </div>
