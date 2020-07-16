@@ -19,29 +19,20 @@ class App extends React.Component {
 
   generate() {
     const password = generatePassword(this.state);
-    this.setState(() => {
-      return {
-        password
-      }
-    });
+    this.setState(() => { return { password }; });
   }
 
   updateLength(value) {
-    this.setState(() => {
-      return {'length': value}
-    });
+    this.setState(() => { return {'length': value}; });
   }
 
   check(e) {
     const temp = makeObject(e.target.name, this.state[e.target.name]);
-    this.setState(() => {
-      return temp;
-    });
+    this.setState(() => { return temp; });
   }
 
   reset() { 
     this.setState(() => this.default);
-    // turn off checkboxes
   }
 
   render() {
@@ -75,32 +66,32 @@ class App extends React.Component {
          Criteria: (Must select one or more)
          <div>
               <label>
-                <input type="checkbox" name="lowercase" onClick={(e) => this.check(e)}></input>
+                <input type="checkbox" name="lowercase" checked={this.state.lowercase} onChange={(e) => this.check(e)}></input>
                 Include Lowercase
              </label>
             </div>
             <div>
               <label>
-                <input type="checkbox" name="uppercase" onClick={(e) => this.check(e)}></input>
+                <input type="checkbox" name="uppercase" checked={this.state.uppercase} onChange={(e) => this.check(e)}></input>
                 Include Uppercase
               </label>
             </div>
             <div>
               <label>
-                <input type="checkbox" name="numbers" onClick={(e) => this.check(e)}></input>
+                <input type="checkbox" name="numbers" checked={this.state.numbers} onChange={(e) => this.check(e)}></input>
                 Include Numbers
               </label>
             </div>
             <div>
               <label>
-                <input type="checkbox" name="specialCharacters" onClick={(e) => this.check(e)}></input>
+                <input type="checkbox" name="specialCharacters" checked={this.state.specialCharacters} onChange={(e) => this.check(e)}></input>
                   Include Special Characters
                 </label>
             </div>
             <div>
               <label>
                 <div>
-                  <input type="range" min="8" max="128" defaultValue="8" onChange={(e) => this.updateLength(e.target.value)}></input>
+                  <input type="range" min="8" max="128" value={this.state.length} onChange={(e) => this.updateLength(e.target.value)}></input>
                 </div>
                 Length: {this.state.length} (Between 8 and 128)
                 </label>
