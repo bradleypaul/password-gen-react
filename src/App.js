@@ -23,11 +23,11 @@ class App extends React.Component {
   }
 
   updateLength(value) {
-    this.setState(() => { return {'length': value}; });
+    this.setState(() => { return {'length': parseInt(value)}; });
   }
 
   check(e) {
-    const temp = makeObject(e.target.name, this.state[e.target.name]);
+    const temp = makeObject(e.target.name, e.target.checked);
     this.setState(() => { return temp; });
   }
 
