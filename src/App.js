@@ -11,7 +11,8 @@ class App extends React.Component {
       lowercase: false,
       specialCharacters: false,
       numbers: false,
-      length: 8
+      length: 8,
+      copySuccess: false
     };
 
     this.state = this.default;
@@ -23,7 +24,7 @@ class App extends React.Component {
   }
 
   updateLength(value) {
-    this.setState(() => { return {'length': parseInt(value)}; });
+    this.setState(() => { return { 'length': parseInt(value) }; });
   }
 
   check(e) {
@@ -31,7 +32,14 @@ class App extends React.Component {
     this.setState(() => { return temp; });
   }
 
-  reset() { 
+  copy() {
+    const el = this.textarea;
+    el.select();
+    document.execCommand('copy');
+    this.setState(() => { return {copySuccess: true}; })
+  }
+
+  reset() {
     this.setState(() => this.default);
   }
 
@@ -50,16 +58,24 @@ class App extends React.Component {
               <textarea
                 readOnly
                 id="password"
-                placeholder="Your Secure Password"
+                placeholder="Your Secure Password. Click here to copy password."
                 aria-label="Generated Password"
                 value={this.state.password}
+                onClick={() => this.copy()}
+                ref={(textarea) => this.textarea = textarea}
               ></textarea>
+              {
+                this.state.copySuccess ?
+                  <div style={{ "color": "green" }}>
+                    Success!
+                  </div> : null
+              }
             </div>
             <div className="card-footer">
-              <button id="generate" className="btn" onClick={() => this.generate()}>
+              <button className="btn" onClick={() => this.generate()}>
                 Generate Password
               </button>
-              <button id="generate" className="btn" onClick={() => this.reset()}>
+              <button className="btn" onClick={() => this.reset()}>
                 Reset
               </button>
             </div>
