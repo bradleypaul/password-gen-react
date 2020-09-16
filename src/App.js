@@ -1,122 +1,124 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { generatePassword, makeObject } from './generate';
 import './App.css';
 
-class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.default = {
-      password: '',
-      uppercase: false,
-      lowercase: false,
-      specialCharacters: false,
-      numbers: false,
-      length: 8,
-      copySuccess: false
-    };
+function App() {
+  const defaultSettings = {
+    password: '',
+    uppercase: false,
+    lowercase: false,
+    specialCharacters: false,
+    numbers: false,
+    length: 8,
+    copySuccess: false
+  };
 
-    this.state = this.default;
+  const [configs, setConfigs] = useState(defaultSettings);
+
+  function generate() {
+    const password = generatePassword(configs);
+    setConfigs({
+      ...configs,
+      password
+    });
   }
 
-  generate() {
-    const password = generatePassword(this.state);
-    this.setState(() => { return { password }; });
+  function updateLength(length) {
+    setConfigs({
+      ...configs,
+      length
+    });
   }
 
-  updateLength(value) {
-    this.setState(() => { return { 'length': parseInt(value) }; });
-  }
-
-  check(e) {
+  function check(e) {
     const temp = makeObject(e.target.name, e.target.checked);
-    this.setState(() => { return temp; });
+    setConfigs({
+      ...configs,
+      [e.target.name]: e.target.checked
+    })
   }
 
-  copy() {
-    const el = this.textarea;
+  function copy(e) {
+    const el = e.target;
+    console.log(e.target.value)// textarea;
     el.select();
     document.execCommand('copy');
-    this.setState(() => { return {copySuccess: true}; })
   }
 
-  reset() {
-    this.setState(() => this.default);
+  function reset() {
+    setConfigs(defaultSettings);
   }
-
-  render() {
-    return (
-      <div className="App">
-        <header>
-          <h1>Password Generator React</h1>
-        </header>
-        <div className="container">
-          <div className="card">
-            <div className="card-header">
-              <h2>Generate a Password</h2>
-            </div>
-            <div className="card-body">
-              <textarea
-                readOnly
-                id="password"
-                placeholder="Your Secure Password. Click here to copy password."
-                aria-label="Generated Password"
-                value={this.state.password}
-                onClick={() => this.copy()}
-                ref={(textarea) => this.textarea = textarea}
-              ></textarea>
-              {
-                this.state.copySuccess ?
-                  <div style={{ "color": "green" }}>
-                    Success!
+  return (
+    <div className="App">
+      <header>
+        <h1>Password Generator React</h1>
+      </header>
+      <div className="container">
+        <div className="card">
+          <div className="card-header">
+            <h2>Generate a Password</h2>
+          </div>
+          <div className="card-body">
+            <textarea
+              readOnly
+              id="password"
+              placeholder="Your Secure Password. Click here to copy password."
+              aria-label="Generated Password"
+              value={configs.password}
+              onClick={copy}
+            ></textarea>
+            {
+              configs.copySuccess ?
+                <div style={{ "color": "green" }}>
+                  Success!
                   </div> : null
-              }
-            </div>
-            <div className="card-footer">
-              <button className="btn" onClick={() => this.generate()}>
-                Generate Password
+            }
+          </div>
+          <div className="card-footer">
+            <button className="btn" onClick={generate}>
+              Generate Password
               </button>
-              <button className="btn" onClick={() => this.reset()}>
-                Reset
+            <button className="btn" onClick={reset}>
+              Reset
               </button>
-            </div>
+          </div>
          Criteria: (Must select one or more)
          <div>
-              <label>
-                <input type="checkbox" name="lowercase" checked={this.state.lowercase} onChange={(e) => this.check(e)}></input>
+            <label>
+              <input type="checkbox" name="lowercase" checked={configs.lowercase} onChange={(e) => check(e)}></input>
                 Include Lowercase
              </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" name="uppercase" checked={this.state.uppercase} onChange={(e) => this.check(e)}></input>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" name="uppercase" checked={configs.uppercase} onChange={(e) => check(e)}></input>
                 Include Uppercase
               </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" name="numbers" checked={this.state.numbers} onChange={(e) => this.check(e)}></input>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" name="numbers" checked={configs.numbers} onChange={(e) => check(e)}></input>
                 Include Numbers
               </label>
-            </div>
-            <div>
-              <label>
-                <input type="checkbox" name="specialCharacters" checked={this.state.specialCharacters} onChange={(e) => this.check(e)}></input>
+          </div>
+          <div>
+            <label>
+              <input type="checkbox" name="specialCharacters" checked={configs.specialCharacters} onChange={(e) => check(e)}></input>
                   Include Special Characters
                 </label>
-            </div>
-            <div>
-              <label>
-                <div>
-                  <input type="range" min="8" max="128" value={this.state.length} onChange={(e) => this.updateLength(e.target.value)}></input>
-                </div>
-                Length: {this.state.length} (Between 8 and 128)
-                </label>
-            </div>
+          </div>
+          <div>
+            <label>
+              <div>
+                <input type="range" min="8" max="128" value={configs.length} onChange={(e) => updateLength(e.target.value)}></input>
+              </div>
+                Length: {configs.length} (Between 8 and 128)
+            </label>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 export default App;

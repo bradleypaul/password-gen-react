@@ -12,21 +12,24 @@ function validateChars(criteria) {
 
 function buildWordbank(criteria, characterStrings) {
   // use filtered criteria to map against the character strings
-  return criteria.map(key => characterStrings[key]).join('');
+  return criteria.reduce((accumulator, key) => accumulator + characterStrings[key], '');
 }
 
 function buildPassword(wordbank, length) {
-  return new Array(length).fill(0).map(_ => {
-    return wordbank[Math.floor(Math.random() * wordbank.length)];
-  }).join('');
+  let retVal = '';
+  for(let i = 0; i < length; i++) {
+    retVal += wordbank[Math.floor(Math.random() * wordbank.length)];
+  }
+  return retVal;
 }
 
 function generatePassword(criteria) {
+  console.log(criteria);
   const filteredCriteria = validateChars(criteria);
 
   // make sure the filtered criteria has a non-zero length
   if (validateChars(criteria).length) {
-    const wordbank = buildWordbank(filteredCriteria, characterStrings)
+    const wordbank = buildWordbank(filteredCriteria, characterStrings);
     return buildPassword(wordbank, criteria.length);
   }
   else {
